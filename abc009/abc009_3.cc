@@ -33,9 +33,20 @@ using f64 = double;
 
 using namespace std::literals;
 
-std::tuple<i64, std::string> minimizeSwaps(std::string string, i64 begin,
-                                           std::string compareTo) {
+i64 swapCount(std::string a, std::string b) {
   i64 count = 0;
+
+  for (i64 i = 0; i < b.size(); i++) {
+    if (a[i] != b[i]) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+std::string minimizeSwaps(std::string string, i64 begin,
+                          std::string compareTo) {
   std::vector<char> swapped(string.size());
 
   for (i64 i = 0; i < begin; i++) {
@@ -49,10 +60,6 @@ std::tuple<i64, std::string> minimizeSwaps(std::string string, i64 begin,
   }
 
   for (i64 i = 0; i < string.size(); i++) {
-    if (string[i] != compareTo[i]) {
-      count++;
-    }
-
     if (i < begin) {
       letters.erase(letters.find(string[i]));
       swapped[i] = string[i];
@@ -73,7 +80,7 @@ std::tuple<i64, std::string> minimizeSwaps(std::string string, i64 begin,
     }
   }
 
-  return {count, std::string{swapped.begin(), swapped.end()}};
+  return std::string{swapped.begin(), swapped.end()};
 }
 
 i64 N, K;
@@ -94,10 +101,10 @@ std::string tryModify(i64 target, std::string string) {
   for (auto &&s : swapWith) {
     std::string swapped = string;
     std::swap(swapped[target], swapped[s]);
-    i64 swapCount;
-    std::tie(swapCount, swapped) = minimizeSwaps(swapped, target + 1, S);
+    swapped = minimizeSwaps(swapped, target + 1, S);
+    i64 count = swapCount(swapped, S);
 
-    if (K >= swapCount) {
+    if (K >= count) {
       return swapped;
     }
   }
