@@ -38,45 +38,29 @@ using f64 = double;
 
 using namespace std::literals;
 
-template <typename T>
-std::istream &operator>>(std::istream &s, std::vector<T> &v) {
-  for (auto &&v_i : v) {
-    s >> v_i;
+i64 isGood(i64 n) {
+  i64 last = -1, streak = 1;
+  i64 maxStreak = 0;
+
+  while (n > 0) {
+    if (n % 10 != last) {
+      last = n % 10;
+      streak = 1;
+    } else {
+      streak++;
+    }
+
+    maxStreak = std::max(maxStreak, streak);
+    n /= 10;
   }
-  return s;
+
+  return maxStreak >= 3;
 }
 
 int main() {
   i64 N;
   std::cin >> N;
-  std::vector<i64> A(N);
-  std::cin >> A;
-  std::sort(A.begin(), A.end());
-
-  i64 last = -1, count;
-  std::list<i64> edges;
-
-  for (i64 i = N - 1; i >= 0; i--) {
-    if (A[i] != last) {
-      last = A[i];
-      count = 0;
-    }
-
-    count++;
-
-    if (count == 2) {
-      edges.push_back(last);
-
-      if (edges.size() == 2) {
-        break;
-      }
-
-      count = 0;
-    }
-  }
-
-  std::cout << (edges.size() == 2 ? edges.front() * edges.back() : 0)
-            << std::endl;
+  std::cout << (isGood(N) ? "Yes" : "No") << std::endl;
 exit:
   return 0;
 }

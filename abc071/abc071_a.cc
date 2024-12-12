@@ -38,45 +38,10 @@ using f64 = double;
 
 using namespace std::literals;
 
-template <typename T>
-std::istream &operator>>(std::istream &s, std::vector<T> &v) {
-  for (auto &&v_i : v) {
-    s >> v_i;
-  }
-  return s;
-}
-
 int main() {
-  i64 N;
-  std::cin >> N;
-  std::vector<i64> A(N);
-  std::cin >> A;
-  std::sort(A.begin(), A.end());
-
-  i64 last = -1, count;
-  std::list<i64> edges;
-
-  for (i64 i = N - 1; i >= 0; i--) {
-    if (A[i] != last) {
-      last = A[i];
-      count = 0;
-    }
-
-    count++;
-
-    if (count == 2) {
-      edges.push_back(last);
-
-      if (edges.size() == 2) {
-        break;
-      }
-
-      count = 0;
-    }
-  }
-
-  std::cout << (edges.size() == 2 ? edges.front() * edges.back() : 0)
-            << std::endl;
+  i64 x, a, b;
+  std::cin >> x >> a >> b;
+  std::cout << (std::abs(a - x) < std::abs(b - x) ? 'A' : 'B') << std::endl;
 exit:
   return 0;
 }
